@@ -21,3 +21,11 @@ class QueryExecution:
     affected_rows: int | None
     rows: tuple[dict[str, object], ...] | None
     message: str | None
+
+    def __post_init__(self):
+        if self.duration_ms < 0:
+            raise ValueError("duration_ms cannot be negative")
+        if self.affected_rows is not None and self.affected_rows < 0:
+            raise ValueError("affected_rows cannot be negative")
+        if self.message is not None and self.message == "":
+            raise ValueError("message cannot be an empty string")

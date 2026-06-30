@@ -13,3 +13,7 @@ class SqlScript:
     """
 
     queries: tuple[Query, ...]
+
+    def __post_init__(self):
+        if len(self.queries) == 0:
+            raise ValueError("queries cannot be empty")

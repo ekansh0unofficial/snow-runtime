@@ -15,3 +15,7 @@ class ExecutionOptions:
     rollback: bool
     log_level: LogLevel
     export_format: ExportFormat | None
+
+    def __post_init__(self):
+        if self.timeout is not None and self.timeout <= 0:
+            raise ValueError("timeout must be a positive integer")

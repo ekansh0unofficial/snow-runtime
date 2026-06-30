@@ -17,6 +17,12 @@ class ExecutionReport:
     total_duration_ms: int
     rolled_back: bool
 
+    def __post_init__(self):
+        if len(self.executions) == 0:
+            raise ValueError("executions cannot be empty")
+        if self.total_duration_ms < 0:
+            raise ValueError("total_duration_ms cannot be negative")
+
     @property
     def success(self) -> bool:
         """True only when every query in the script completed successfully."""

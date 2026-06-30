@@ -14,3 +14,10 @@ class Context:
     schema: str | None
     warehouse: str | None
     role: str | None
+
+    def __post_init__(self):
+        for name in ("database", "schema", "warehouse", "role"):
+            if getattr(self, name) is not None and getattr(self, name) == "":
+                raise ValueError(f"{name} cannot be an empty string")
+
+

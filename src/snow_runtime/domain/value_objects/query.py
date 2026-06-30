@@ -13,3 +13,7 @@ class Query:
 
     sql: str
     query_type: QueryType
+
+    def __post_init__(self):
+        if self.sql == "":
+            raise ValueError("sql cannot be an empty string")

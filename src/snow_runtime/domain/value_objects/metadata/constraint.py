@@ -23,3 +23,16 @@ class Constraint:
     referenced_columns: tuple[str, ...] | None = field(default=None)
     on_delete: ReferentialAction | None = field(default=None)
     on_update: ReferentialAction | None = field(default=None)
+
+    def __post_init__(self):
+        if self.name == "":
+            raise ValueError("name cannot be an empty string")
+        if len(self.columns) == 0:
+            raise ValueError("columns cannot be empty")
+        if any(c == "" for c in self.columns):
+            raise ValueError("columns cannot contain empty strings")
+        if self.referenced_columns is not None:
+            if len(self.referenced_columns) == 0:
+                raise ValueError("referenced_columns cannot be empty")
+            if any(c == "" for c in self.referenced_columns):
+                raise ValueError("referenced_columns cannot contain empty strings")

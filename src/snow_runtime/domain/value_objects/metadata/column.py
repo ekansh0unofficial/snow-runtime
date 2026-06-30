@@ -15,3 +15,9 @@ class Column:
     data_type: DataType
     nullable: bool
     default_value: str | None
+
+    def __post_init__(self):
+        if self.name == "":
+            raise ValueError("name cannot be an empty string")
+        if self.default_value is not None and self.default_value == "":
+            raise ValueError("default_value cannot be an empty string")

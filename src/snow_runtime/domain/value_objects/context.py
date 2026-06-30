@@ -1,9 +1,16 @@
 from dataclasses import dataclass
 
-@dataclass(forzen=True , slots=True)
-class Context():
-    database : str | None
-    schema : str  | None
-    warehouse : str | None
-    role : str | None
-    
+
+@dataclass(frozen=True, slots=True)
+class Context:
+    """Represents the active Snowflake execution environment for a session.
+
+    All fields are optional; None means the session inherits the account default
+    or the value set by a prior USE statement. Authentication and connection
+    details live in ConnectionProfile, not here.
+    """
+
+    database: str | None
+    schema: str | None
+    warehouse: str | None
+    role: str | None

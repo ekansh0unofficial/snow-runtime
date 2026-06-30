@@ -1,2 +1,6 @@
 from snow_runtime.domain.value_objects.context import Context
 from snow_runtime.domain.value_objects.execution_option import ExecutionOptions
+from snow_runtime.domain.value_objects.execution_report import ExecutionReport
+from snow_runtime.domain.value_objects.query import Query
+from snow_runtime.domain.value_objects.query_execution import QueryExecution
+from snow_runtime.domain.value_objects.sql_script import SqlScript

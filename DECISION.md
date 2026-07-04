@@ -123,7 +123,7 @@ Snow Runtime coordinates transaction execution but does not manage transaction
 state.
 
 ---
-
+## 2026-06-30
 ### Query Scope
 
 **Decision**
@@ -181,7 +181,7 @@ Current categories:
 Execution behavior depends on SQL category rather than individual SQL keywords.
 
 ---
-
+## 2026-07-01
 ### History Ownership
 
 **Decision**
@@ -263,3 +263,69 @@ originated from a terminal command or a `.sql` file.
 
 This simplifies execution, progress reporting, rollback, history and future
 batch features.
+
+### Context Promoted to Entity
+
+**Decision**
+
+Context is promoted from a Value Object to an Entity.
+
+**Reason**
+
+Contexts are now persistent, named configurations owned by a ConnectionProfile.
+
+Users create, rename, update and delete contexts by identity rather than by value.
+
+This introduces lifecycle and identity, making Context an Entity.
+
+## 2026-07-03
+### Runtime is an Application Concept
+
+**Decision**
+
+Runtime is **not** a Domain Entity.
+
+It belongs to the Application Layer and acts as the application's composition root and orchestrator.
+
+**Reason**
+
+The Runtime does not represent a business concept. It coordinates the application's lifecycle by creating and wiring Services, exposing Applications, managing IPC, and controlling the overall execution environment.
+
+The business domain remains valid independent of the Runtime implementation. Core domain concepts such as `ConnectionProfile`, `Session`, `Context`, `Command`, and `HistoryEntry` exist regardless of whether the Runtime is implemented as a daemon, embedded library, or another hosting model.
+
+Treating the Runtime as a Domain Entity would introduce infrastructure concerns into the Domain Layer and violate the separation between business concepts and application orchestration.
+
+The existence of a single Runtime is considered a deployment constraint rather than a Domain rule.
+
+### Entities Own State, Services Own Workflows
+
+**Decision**
+
+Entities are responsible for representing business concepts and maintaining
+their own valid state.
+
+Business workflows involving multiple entities, persistence, external systems,
+or global validation belong to Services.
+
+**Reason**
+
+An Entity should only make decisions using its own state.
+
+Operations requiring knowledge of other entities, repositories, providers, or
+external systems belong to the Service Layer.
+
+
+### Credentials Are Not Part of ConnectionProfile
+
+**Decision**
+
+ConnectionProfile stores connection metadata only.
+
+Passwords and other secrets are never stored in the Domain.
+
+**Reason**
+
+Credential storage belongs to the Secret Provider.
+
+The Domain models what is required to establish a connection, while the Secret
+Provider manages how sensitive credentials are securely stored and retrieved.

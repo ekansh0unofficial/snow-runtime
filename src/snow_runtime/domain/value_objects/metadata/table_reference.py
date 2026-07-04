@@ -10,6 +10,7 @@ class TableReference:
     table: str
 
     def __post_init__(self):
-        for name in ("database", "schema", "table"):
-            if getattr(self, name) == "":
-                raise ValueError(f"{name} cannot be an empty string")
+        for field_name in ("database", "schema", "table"):
+            value = getattr(self, field_name)
+            if not value or not value.strip():
+                raise ValueError(f"{field_name} cannot be empty or whitespace")

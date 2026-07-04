@@ -7,8 +7,8 @@ from snow_runtime.domain.value_objects.query_execution import QueryExecution
 class ExecutionReport:
     """Aggregates the results of all queries executed within a single SqlScript.
 
-    total_duration_ms is the wall-clock time for the entire script, which may
-    be less than the sum of per-query durations due to network overlap.
+    total_duration_ms is the wall-clock time for the entire script. It may
+    differ from the sum of per-query durations due to overhead between statements.
     rolled_back is True when a failure triggered a rollback under the
     ExecutionOptions.rollback policy, False otherwise.
     """

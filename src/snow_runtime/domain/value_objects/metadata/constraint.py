@@ -25,8 +25,8 @@ class Constraint:
     on_update: ReferentialAction | None = field(default=None)
 
     def __post_init__(self):
-        if self.name == "":
-            raise ValueError("name cannot be an empty string")
+        if not self.name or not self.name.strip():
+            raise ValueError("name cannot be empty or whitespace")
         if len(self.columns) == 0:
             raise ValueError("columns cannot be empty")
         if any(c == "" for c in self.columns):
@@ -36,3 +36,8 @@ class Constraint:
                 raise ValueError("referenced_columns cannot be empty")
             if any(c == "" for c in self.referenced_columns):
                 raise ValueError("referenced_columns cannot contain empty strings")
+        if self.type == ConstraintType.FOREIGN_KEY:
+            if self.referenced_table is None or self.referenced_columns is None:
+                raise ValueError(
+                    "FOREIGN_KEY constraint requires referenced_table and referenced_columns"
+                )

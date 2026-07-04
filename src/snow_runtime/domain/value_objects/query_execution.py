@@ -27,5 +27,5 @@ class QueryExecution:
             raise ValueError("duration_ms cannot be negative")
         if self.affected_rows is not None and self.affected_rows < 0:
             raise ValueError("affected_rows cannot be negative")
-        if self.message is not None and self.message == "":
+        if self.message == "":
             raise ValueError("message cannot be an empty string")

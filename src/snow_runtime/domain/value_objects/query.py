@@ -15,5 +15,5 @@ class Query:
     query_type: QueryType
 
     def __post_init__(self):
-        if self.sql == "":
-            raise ValueError("sql cannot be an empty string")
+        if not self.sql or not self.sql.strip():
+            raise ValueError("sql cannot be empty or whitespace")

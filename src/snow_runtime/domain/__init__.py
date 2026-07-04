@@ -9,8 +9,14 @@ from snow_runtime.domain.enums import (
     RuntimeState,
     SessionState,
 )
-from snow_runtime.domain.value_objects import (
+from snow_runtime.domain.entities import (
+    Command,
+    ConnectionProfile,
     Context,
+    HistoryEntry,
+    Session,
+)
+from snow_runtime.domain.value_objects import (
     ExecutionOptions,
     ExecutionReport,
     Query,

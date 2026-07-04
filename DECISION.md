@@ -329,3 +329,21 @@ Credential storage belongs to the Secret Provider.
 
 The Domain models what is required to establish a connection, while the Secret
 Provider manages how sensitive credentials are securely stored and retrieved.
+
+### Commands Model User Intent
+
+**Decision**
+
+Commands are modelled as an abstract base entity with concrete subclasses for
+each supported user intent.
+
+A generic payload-based command model will not be used.
+
+**Reason**
+
+Each command represents a distinct business operation with its own required
+data and invariants.
+
+Using concrete command types provides compile-time type safety, removes
+payload validation from Services, and allows new commands to be added without
+expanding a central payload schema or branching on CommandType.

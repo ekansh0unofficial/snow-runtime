@@ -21,4 +21,3 @@ class Session:
     context: Context | None
     created_at: datetime
     last_activity_at: datetime
-

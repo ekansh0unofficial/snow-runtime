@@ -11,6 +11,7 @@ class SessionState(StrEnum):
     DISCONNECTED    — no session is currently running on the runtime.
     ERROR           — an error occurred (e.g. incorrect MFA, network failure).
     """
+
     AUTHENTICATING = "authenticating"
     ACTIVE = "active"
     EXPIRED = "expired"

@@ -11,6 +11,7 @@ class RuntimeState(StrEnum):
     STOPPED   — default state; no active connection to Snowflake.
     ERROR     — an unrecoverable failure occurred during connection or operation.
     """
+
     STARTING = "starting"
     RUNNING = "running"
     STOPPING = "stopping"

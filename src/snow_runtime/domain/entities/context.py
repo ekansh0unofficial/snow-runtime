@@ -20,6 +20,3 @@ class Context:
             value = getattr(self, field_name)
             if not value or not value.strip():
                 raise ValueError(f"{field_name} cannot be empty or whitespace")
-
-
-

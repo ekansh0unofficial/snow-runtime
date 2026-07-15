@@ -9,6 +9,7 @@ class LogLevel(StrEnum):
     WARNING — unexpected but non-fatal conditions that may require attention.
     ERROR   — failures that prevented a specific operation from completing.
     """
+
     INFO = "info"
     WARNING = "warning"
     ERROR = "error"

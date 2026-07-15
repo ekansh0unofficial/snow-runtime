@@ -13,6 +13,7 @@ class ConstraintType(StrEnum):
     DEFAULT     — specifies a default value when no value is provided on insert.
     UNKNOWN     — constraint type could not be determined or is unsupported.
     """
+
     PRIMARY_KEY = "primary_key"
     FOREIGN_KEY = "foreign_key"
     UNIQUE = "unique"

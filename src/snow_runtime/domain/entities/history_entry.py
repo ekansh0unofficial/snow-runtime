@@ -24,4 +24,3 @@ class HistoryEntry:
     profile_name: str
     session_id: UUID
     context_name: str
-

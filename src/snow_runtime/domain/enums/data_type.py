@@ -19,6 +19,7 @@ class DataType(StrEnum):
     BINARY    — raw binary data (VARBINARY / BYTES).
     GEOGRAPHY — geospatial data in GeoJSON format using WGS84 coordinates.
     """
+
     INTEGER = "integer"
     FLOAT = "float"
     DECIMAL = "decimal"

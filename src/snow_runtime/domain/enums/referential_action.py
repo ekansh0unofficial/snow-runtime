@@ -12,6 +12,7 @@ class ReferentialAction(StrEnum):
     SET_NULL    — sets the foreign key column(s) in dependent rows to NULL.
     SET_DEFAULT — sets the foreign key column(s) in dependent rows to their default value.
     """
+
     NO_ACTION = "no_action"
     RESTRICT = "restrict"
     CASCADE = "cascade"

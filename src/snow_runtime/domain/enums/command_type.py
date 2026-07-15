@@ -16,6 +16,7 @@ class CommandType(StrEnum):
     HISTORY     — browse command history: history --session_id --context_name.
     DIAGNOSTIC  — run health checks: doctor.
     """
+
     RUNTIME = "runtime"
     CONFIG = "config"
     DATA = "data"

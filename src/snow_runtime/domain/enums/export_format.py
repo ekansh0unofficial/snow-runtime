@@ -9,6 +9,7 @@ class ExportFormat(StrEnum):
     JSON    — JavaScript Object Notation; human-readable semi-structured format.
     PARQUET — columnar binary format optimized for analytical workloads and compression.
     """
+
     CSV = "csv"
     JSON = "json"
     PARQUET = "parquet"

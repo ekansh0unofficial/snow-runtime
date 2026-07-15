@@ -347,3 +347,112 @@ data and invariants.
 Using concrete command types provides compile-time type safety, removes
 payload validation from Services, and allows new commands to be added without
 expanding a central payload schema or branching on CommandType.
+
+---
+
+## 2026-07-11
+
+### Context Application vs Config Application
+
+**Decision**
+
+Context Application manages saved contexts (CRUD) within a ConnectionProfile.
+Config Application manages profiles (CRUD). They are separate Applications
+operating at different levels of the same hierarchy.
+
+**Reason**
+
+Profiles and contexts have distinct lifecycles and responsibilities:
+
+- Config = profile-level management (name, org, account, username, password)
+- Context = context-level management (name, database, schema, warehouse, role)
+
+Separating them keeps each Application focused on a single concern and allows
+them to evolve independently.
+
+### Application Layer Contracts First
+
+**Decision**
+
+Define Application layer contracts (method signatures, inputs, outputs,
+dependencies) before implementing Services.
+
+**Reason**
+
+Applications define the orchestration surface area. Writing them first
+establishes exactly what Service methods are needed, preventing speculative
+abstraction in the Service Layer.
+
+Application implementations may not run until Services are built, but they
+serve as a design document validated by actual usage.
+
+### Application Categorization and Session Dependency
+
+**Decision**
+
+Applications are grouped into three categories:
+
+- **Lifecycle** — Config, Context, Runtime
+- **Work** — SQL, Metadata, Data, Explore
+- **Observability** — History, Logs, Doctor
+
+Work Applications require an active Snowflake Session and communicate
+through Session Service. Lifecycle and Observability Applications operate
+locally (TOML, SQLite, filesystem) and do not require a Session.
+
+**Reason**
+
+This categorization clarifies which Applications depend on Session Service
+and which are purely local. It prevents unnecessary coupling between
+Applications that manage local state and Applications that need live
+Snowflake connectivity.
+
+### No ContextService
+
+**Decision**
+
+There is no separate ContextService.
+
+- ContextApplication manages saved contexts (CRUD) via ConfigurationService.
+- The active context lives on the Session entity, managed by SessionService.
+
+**Reason**
+
+The active context (current database, schema, warehouse, role) is runtime
+state that belongs to an active Session. There is no need for a separate
+Service to manage what is already a property of Session. ContextApplication
+handles persistence of named context configurations in TOML, while
+SessionService owns the active context during a live session.
+
+### SQL Application Has One Method
+
+**Decision**
+
+SQLApplication exposes a single method: `execute(sql: str)`.
+
+It does not have separate methods for file execution, stdin execution,
+or command-line execution.
+
+**Reason**
+
+The source of SQL (command string, file, stdin) is an Interface concern.
+The CLI Interface reads SQL from its source and passes extracted text
+to the Application. The Application only receives and executes SQL text,
+remaining independent of how it was obtained.
+
+### Metadata and Explore Merged
+
+**Decision**
+
+Metadata Application and Explore Application are merged into a single
+ExploreApplication.
+
+Catalog Service and Schema Service remain separate Services to preserve
+SOLID compliance — each owns a single business capability.
+
+**Reason**
+
+Metadata and Explore both deal with discovering and inspecting Snowflake
+objects. Splitting them into two Applications created unnecessary
+duplication. A single ExploreApplication exposes a unified surface area
+while delegating to focused Services underneath.

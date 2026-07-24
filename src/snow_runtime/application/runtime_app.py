@@ -1,4 +1,6 @@
 class RuntimeApplication:
+    """Controls the lifecycle of the Snow Runtime process: start, stop, restart, and status."""
+
     def __init__(
         self,
         config_service,
@@ -9,6 +11,7 @@ class RuntimeApplication:
         logging_service,
         diagnostic_service,
     ):
+        """Initialise with all services and providers required to manage the full runtime lifecycle."""
         self.config_service = config_service
         self.session_service = session_service
         self.secret_service = secret_service
@@ -18,14 +21,18 @@ class RuntimeApplication:
         self.diagnostic_service = diagnostic_service
 
     def start(self):
+        """Start the runtime. Raises RuntimeAlreadyRunningError if it is already active."""
         pass
 
     def stop(self):
+        """Gracefully stop the runtime. Raises RuntimeNotStartedError if it is not running."""
         pass
 
     def restart(self):
+        """Stop and then start the runtime."""
         pass
 
     @property
     def status(self):
+        """Return the current RuntimeState of the runtime."""
         pass

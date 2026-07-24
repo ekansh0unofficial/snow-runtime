@@ -20,7 +20,12 @@ class HistoryEntry:
     success: bool
     started_at: datetime
     completed_at: datetime
-    duration: timedelta
     profile_name: str
     session_id: UUID
     context_name: str
+
+    @property
+    def duration(self) -> timedelta : 
+        return self.completed_at - self.started_at
+
+

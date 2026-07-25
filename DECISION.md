@@ -487,3 +487,23 @@ extension to catch specific failure categories and respond with
 appropriate messages. The hierarchy also enforces the architectural rule
 that third-party exceptions from the Provider layer must be converted
 into domain exceptions before propagating upward.
+
+### ConfigService Owns Profile and Context CRUD
+
+**Decision**
+
+`ConfigService` is responsible for all connection profile and context
+CRUD operations, including active profile and active context tracking.
+There is no separate `ContextService`.
+
+Context management lives in `ConfigService` because contexts are owned
+by `ConnectionProfile` and both are persisted in the same TOML config
+file. Splitting them would require two services coordinating writes to
+the same file.
+
+**Reason**
+
+Keeping profile and context management in one service avoids unnecessary
+coordination between services for what is fundamentally one persistence
+concern. `SessionService` separately owns the active context during a
+live Snowflake session — that is runtime state, not config state.

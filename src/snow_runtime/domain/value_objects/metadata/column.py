@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from snow_runtime.domain.enums import DataType
 
+from ...exceptions.validation_error import ValidationError
+
 
 @dataclass(frozen=True, slots=True)
 class Column:
@@ -18,6 +20,6 @@ class Column:
 
     def __post_init__(self):
         if not self.name or not self.name.strip():
-            raise ValueError("name cannot be empty or whitespace")
+            raise ValidationError("name cannot be empty or whitespace")
         if self.default_value == "":
-            raise ValueError("default_value cannot be an empty string")
+            raise ValidationError("default_value cannot be an empty string")

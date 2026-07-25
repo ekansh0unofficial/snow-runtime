@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from snow_runtime.domain.value_objects.query import Query
 
+from ..exceptions.validation_error import ValidationError
+
 
 @dataclass(frozen=True, slots=True)
 class SqlScript:
@@ -16,4 +18,4 @@ class SqlScript:
 
     def __post_init__(self):
         if len(self.queries) == 0:
-            raise ValueError("queries cannot be empty")
+            raise ValidationError("queries cannot be empty")

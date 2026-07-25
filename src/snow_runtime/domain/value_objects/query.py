@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from snow_runtime.domain.enums import QueryType
 
+from ..exceptions.validation_error import ValidationError
+
 
 @dataclass(frozen=True, slots=True)
 class Query:
@@ -16,4 +18,4 @@ class Query:
 
     def __post_init__(self):
         if not self.sql or not self.sql.strip():
-            raise ValueError("sql cannot be empty or whitespace")
+            raise ValidationError("sql cannot be empty or whitespace")

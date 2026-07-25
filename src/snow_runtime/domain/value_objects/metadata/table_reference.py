@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from ...exceptions.validation_error import ValidationError
+
 
 @dataclass(frozen=True, slots=True)
 class TableReference:
@@ -13,4 +15,4 @@ class TableReference:
         for field_name in ("database", "schema", "table"):
             value = getattr(self, field_name)
             if not value or not value.strip():
-                raise ValueError(f"{field_name} cannot be empty or whitespace")
+                raise ValidationError(f"{field_name} cannot be empty or whitespace")

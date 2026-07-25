@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from ..exceptions import ConfigurationError
+
 from .context import Context
 
 
@@ -24,4 +26,4 @@ class ConnectionProfile:
         for field_name in ("name", "organization", "account", "username"):
             value = getattr(self, field_name)
             if not value or not value.strip():
-                raise ValueError(f"{field_name} cannot be empty or whitespace")
+                raise ConfigurationError(f"{field_name} cannot be empty or whitespace")

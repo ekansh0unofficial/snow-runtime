@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from snow_runtime.domain.value_objects.query import Query
 
+from ..exceptions.validation_error import ValidationError
+
 
 @dataclass(frozen=True, slots=True)
 class QueryExecution:
@@ -23,9 +25,10 @@ class QueryExecution:
     message: str | None
 
     def __post_init__(self):
+
         if self.duration_ms < 0:
-            raise ValueError("duration_ms cannot be negative")
+            raise ValidationError("duration_ms cannot be negative")
         if self.affected_rows is not None and self.affected_rows < 0:
-            raise ValueError("affected_rows cannot be negative")
-        if self.message == "":
-            raise ValueError("message cannot be an empty string")
+            raise ValidationError("affected_rows cannot be negative")
+        if self.message is not None and not self.message.strip() :
+            raise ValidationError("message cannot be an empty string")

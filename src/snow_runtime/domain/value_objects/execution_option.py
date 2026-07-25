@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from snow_runtime.domain.enums import LogLevel, ExportFormat
-
+from ..exceptions import ValidationError
 
 @dataclass(frozen=True, slots=True)
 class ExecutionOptions:
@@ -18,4 +18,4 @@ class ExecutionOptions:
 
     def __post_init__(self):
         if self.timeout is not None and self.timeout <= 0:
-            raise ValueError("timeout must be a positive integer")
+            raise ValidationError("timeout must be a positive integer")

@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 
+from ..exceptions.configuration_error import ConfigurationError
+
 
 @dataclass(eq=False, slots=True)
 class Context:
@@ -19,4 +21,4 @@ class Context:
         for field_name in ("name", "database", "schema", "warehouse", "role"):
             value = getattr(self, field_name)
             if not value or not value.strip():
-                raise ValueError(f"{field_name} cannot be empty or whitespace")
+                raise ConfigurationError(f"{field_name} cannot be empty or whitespace")

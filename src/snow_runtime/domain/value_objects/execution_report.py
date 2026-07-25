@@ -2,6 +2,8 @@ from dataclasses import dataclass
 
 from snow_runtime.domain.value_objects.query_execution import QueryExecution
 
+from ..exceptions.validation_error import ValidationError
+
 
 @dataclass(frozen=True, slots=True)
 class ExecutionReport:
@@ -19,9 +21,11 @@ class ExecutionReport:
 
     def __post_init__(self):
         if len(self.executions) == 0:
-            raise ValueError("executions cannot be empty")
+            raise ValidationError("executions cannot be empty")
+        if self.rolled_back and self.success:
+            raise ValidationError("A rolled back execution cannot be marked as successful")    
         if self.total_duration_ms < 0:
-            raise ValueError("total_duration_ms cannot be negative")
+            raise ValidationError("total_duration_ms cannot be negative")
 
     @property
     def success(self) -> bool:

@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 from snow_runtime.domain.enums import ConstraintType, ReferentialAction
 from snow_runtime.domain.value_objects.metadata.table_reference import TableReference
 
+from ...exceptions.validation_error import ValidationError
+
 
 @dataclass(frozen=True, slots=True)
 class Constraint:
@@ -26,18 +28,18 @@ class Constraint:
 
     def __post_init__(self):
         if not self.name or not self.name.strip():
-            raise ValueError("name cannot be empty or whitespace")
+            raise ValidationError("name cannot be empty or whitespace")
         if len(self.columns) == 0:
-            raise ValueError("columns cannot be empty")
+            raise ValidationError("columns cannot be empty")
         if any(c == "" for c in self.columns):
-            raise ValueError("columns cannot contain empty strings")
+            raise ValidationError("columns cannot contain empty strings")
         if self.referenced_columns is not None:
             if len(self.referenced_columns) == 0:
-                raise ValueError("referenced_columns cannot be empty")
+                raise ValidationError("referenced_columns cannot be empty")
             if any(c == "" for c in self.referenced_columns):
-                raise ValueError("referenced_columns cannot contain empty strings")
+                raise ValidationError("referenced_columns cannot contain empty strings")
         if self.type == ConstraintType.FOREIGN_KEY:
             if self.referenced_table is None or self.referenced_columns is None:
-                raise ValueError(
+                raise ValidationError(
                     "FOREIGN_KEY constraint requires referenced_table and referenced_columns"
                 )

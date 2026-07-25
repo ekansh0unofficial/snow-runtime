@@ -19,10 +19,15 @@ class ConnectionProfile:
     organization: str
     account: str
     username: str
-    contexts: tuple[Context, ...]
-    default_context: str | None
+    contexts: tuple[Context, ...] | None = None
+    default_context: str | None = None
 
     def __post_init__(self):
+        object.__setattr__(self , "name" , self.name.strip())
+        object.__setattr__(self, "organization" , self.organization.strip())
+        object.__setattr__(self, "account" , self.account.strip())
+        object.__setattr__(self, "username", self.username.strip())
+
         for field_name in ("name", "organization", "account", "username"):
             value = getattr(self, field_name)
             if not value or not value.strip():

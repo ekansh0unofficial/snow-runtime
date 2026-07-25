@@ -12,12 +12,17 @@ class Context:
     """
 
     name: str
-    database: str
-    schema: str
-    warehouse: str
-    role: str
+    database: str | None = None
+    schema: str | None = None
+    warehouse: str | None = None
+    role: str | None = None 
 
     def __post_init__(self):
+        object.__setattr__(self, "name" , self.name.strip())
+        if self.database is not None : object.__setattr__(self, "database" , self.database.strip())
+        if self.warehouse is not None :  object.__setattr__(self, "warehouse" , self.warehouse.strip())
+        if self.role is not None : object.__setattr__(self, "role" , self.role.strip())
+         
         for field_name in ("name", "database", "schema", "warehouse", "role"):
             value = getattr(self, field_name)
             if not value or not value.strip():

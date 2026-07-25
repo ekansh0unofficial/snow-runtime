@@ -4,9 +4,7 @@ class HistoryApplication:
     def __init__(self, history_service, config_service):
         """Initialise with a history service for persistence and a config service to scope history per profile."""
         self.history_service = history_service
-        self.config_service = (
-            config_service  # history is associated with ConnectionProfile
-        )
+        self.config_service = config_service  
 
     def list(self):
         """Return all history entries for the active connection profile."""

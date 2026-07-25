@@ -456,3 +456,34 @@ Metadata and Explore both deal with discovering and inspecting Snowflake
 objects. Splitting them into two Applications created unnecessary
 duplication. A single ExploreApplication exposes a unified surface area
 while delegating to focused Services underneath.
+
+---
+
+## 2026-07-25
+
+### Domain Exception Hierarchy Introduced
+
+**Decision**
+
+Replace bare `ValueError` raises in all domain validators with a typed
+exception hierarchy rooted at `SnowRuntimeError`.
+
+Three mid-level categories:
+
+- `ValidationError` — bad input shape (value objects, query, metadata)
+- `InvalidStateError` — operation invalid given current system state
+- `DependencyError` — external dependency (Snowflake, network) failed
+
+Specific exceptions sit under each category. `ConnectionProfile` and
+`Context` validators raise `ConfigurationError` (a subclass of
+`ValidationError`). All other domain validators raise `ValidationError`
+directly.
+
+**Reason**
+
+Bare `ValueError` gives callers no information about which layer or
+concept failed. Typed exceptions allow the Application layer and VS Code
+extension to catch specific failure categories and respond with
+appropriate messages. The hierarchy also enforces the architectural rule
+that third-party exceptions from the Provider layer must be converted
+into domain exceptions before propagating upward.
